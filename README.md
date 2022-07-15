@@ -130,6 +130,7 @@ you can see these tests in file `test_bst.cpp`.
 > 
 > for (unsigned i{1'0000'0000}; i-- != 0; )
 >     t.find(i);
+>
 > for (unsigned i{0}; i != 1'0000'0000; ++i)
 >     t.erase(i);
 > 
