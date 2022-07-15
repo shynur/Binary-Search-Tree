@@ -138,4 +138,4 @@ you can see these tests in file `test_bst.cpp`.
 
 测试结果 `gcc 10.3 c++2a Ofast`
 
-![标准库啊标准库, 你太让我失望啦~ 🤡](./.README/test_result.jpg)
+![标准库啊标准库, 你太让我失望啦~ 🤡](https://github.com/Shynur/Binary-Search-Tree/blob/main/.README/test_result.JPG?raw=true)
