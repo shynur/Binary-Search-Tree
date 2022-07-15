@@ -1,8 +1,8 @@
 *if you just hope to use a map a little different from `std::map` but are not interested in how to implement it, please see **Declarations**; <br>or you might want to implement a binary search tree using this pattern, see **Details**; <br>there are also some tests that compared my implementations with `std::map`, see **Tests**.* <br>
 
-`BST.hpp` 包含一个二叉搜索树的基类 `BST`, 可以用它简单实现一个平凡的二叉搜索树 `Plain`; 以及三颗平衡二叉搜索树 (继承自 `BST`), 分别是 AVL 树 `AVL`, Splay 树 `Spay`, 红黑树 `RedBlack`; 
+`BST.hpp` 包含一个二叉搜索树的基类 `BST`, 可以用它简单实现一个平凡的二叉搜索树 `Plain`; 以及三颗平衡二叉搜索树 (继承自 `BST`), 分别是 AVL 树 `AVL`, Splay 树 `Spay`, 红黑树 `RedBlack`; 还有一个概念 `BST_T` (字面意思) 和 `std::hash` 适用于 `BST_T` 的特化.
 
-**利用 `BST` 可以很简单地写出一个新的树结构而无需考虑过多的面向对象的问题, 将 `Plain` 的实现复制粘贴一遍, 再把名字 "Plain" 替换成你喜欢的. 最后专注于编写 `insert` 和 `erase` 两个方法即可.**
+**利用 `BST` 可以很简单地写出一个新的树结构而无需考虑过多的面向对象的问题, 将 `Plain` 的实现复制粘贴一遍, 再把名字 "Plain" 替换成你所喜欢的. 最后专注于编写 `insert` 和 `erase` 两个方法即可.** 
 
 ________________
 
@@ -12,15 +12,17 @@ ________________
 
 - **size**
 
-- **root**: a node entity, which method search always start from
+- **root**: a node entity, which method search always starts from
 
 ### methods
 
 - **height**: what you only need to know is that one single node's height equals to 0
 
   ```C++
-  AVL<int, int> t1{}, t2{};
-  t2.insert(0, 0);
+  AVL<int, int> t1{}, t2{}; // root1     root2
+  t2.insert(0, 0);          //        left   right
+  
+  // root1 is an external node; root2 is internal but its two children are external, ie root2 is a leaf
   assert(t1.height() == 0), assert(t2.height() == 1);
   ```
   
@@ -34,7 +36,7 @@ ________________
   // ie {0, 3} <= {2}
   ```
 
-- **size, contains, begin, end, lower_bound, upper_bound, find, insert, erase... **: see `std::map`
+- **size, contains, begin, end, lower_bound, upper_bound, find, insert, erase... **: see `std::map`. they have almost the same semantics.
 
 - **constructors**: 
 
@@ -65,7 +67,7 @@ ________________
 
   NOT have key-value pair; pointers to left and right child are `nullptr`
 
-  height === 0, color ===BLACK
+  height === 0, color === BLACK
 
 - **leaf**
 
@@ -139,4 +141,4 @@ you can see these tests in file `test_bst.cpp`.
 
 测试结果 `gcc 10.3 c++2a Ofast`
 
-![标准库啊标准库, 你太让我失望啦~ 🤡](https://github.com/Shynur/Binary-Search-Tree/blob/main/.README/test_result.JPG?raw=true)
+![标准库, 你太让我失望啦~ 🤡](https://github.com/Shynur/Binary-Search-Tree/blob/main/.README/test_result.JPG?raw=true)
