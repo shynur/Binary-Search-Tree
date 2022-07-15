@@ -1,5 +1,9 @@
 *if you just hope to use a map a little different from `std::map` but are not interested in how to implement it, please see **Declarations**; <br>or you might want to implement a binary search tree using this pattern, see **Details**; <br>there are also some tests that compared my implementations with `std::map`, see **Tests**.* <br>
 
+`BST.hpp` 包含一个二叉搜索树的基类 `BST`, 可以用它简单实现一个平凡的二叉搜索树 `Plain`; 以及三颗平衡二叉搜索树 (继承自 `BST`), 分别是 AVL 树 `AVL`, Splay 树 `Spay`, 红黑树 `RedBlack`; 
+
+**利用 `BST` 可以很简单地写出一个新的树结构而无需考虑过多的面向对象的问题, 将 `Plain` 的实现复制粘贴一遍, 再把名字 "Plain" 替换成你喜欢的. 最后专注于编写 `insert` 和 `erase` 两个方法即可.**
+
 ________________
 
 ## Declarations
@@ -114,7 +118,7 @@ ________
 
 you can see these tests in file `test_bst.cpp`.
 
-`std::map` 的性能在数据规模较小的时候, 大概是 `AVL` 的 1.1 ~ 1.4 倍, 其它树结构估计也差不多是这个水平. 但是在数据规模很大的时候 (> 9000, 0000), 运气好的话 `BST.hpp` 里的某些实现会比 `std::map` 更快.
+`std::map` 的性能在数据规模较小的时候, 大概是 `AVL` 的 1.1 ~ 1.4 倍, 其它树结构估计也差不多是这个水平. 但是在数据规模很大的时候 (如 9000, 0000), 运气好的话 `BST.hpp` 里的某些实现会比 `std::map` 更快.
 
 测试用例大概长这样:
 
@@ -124,7 +128,7 @@ you can see these tests in file `test_bst.cpp`.
 > 
 > assert(t.size() == 1'0000'0000);
 > 
-> for (unsigned i{1'0000'0000}; i--; )
+> for (unsigned i{1'0000'0000}; i-- != 0; )
 >     t.find(i);
 > for (unsigned i{0}; i != 1'0000'0000; ++i)
 >     t.erase(i);
