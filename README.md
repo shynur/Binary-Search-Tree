@@ -36,7 +36,7 @@ ________________
   // ie {0, 3} <= {2}
   ```
 
-- **size, contains, begin, end, lower_bound, upper_bound, find, insert, erase... **: see `std::map`. they have almost the same semantics.
+- **size, contains, begin, end, lower_bound, upper_bound, find, insert, erase...**: see `std::map`. they have almost the same semantics.
 
 - **constructors**: 
 
