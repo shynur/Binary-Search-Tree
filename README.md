@@ -61,11 +61,11 @@ ________________
 
 - **internal**
 
-  a internal node has key-value pair and left and right child
+  a internal node has key-value pair and left and right children
 
 - **external**
 
-  NOT have key-value pair; pointers to left and right child are `nullptr`
+  NOT have key-value pair; pointers to left and right children are `nullptr`
 
   height === 0, color === BLACK
 
