@@ -1,6 +1,6 @@
-/* 
+/*
  * one pattern for generating BST and some popular implementations of BBST
- * Copyright (C) 2022 Shynur <one.last.kiss@qq.com>. 
+ * Copyright (C) 2022 Shynur <one.last.kiss@qq.com>.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,9 @@
 
 #ifndef BST_Shynur
 #define BST_Shynur
-// *INDENT-OFF*
 #define NDEBUG
+
+// *INDENT-OFF*
 #include <map>           // std::unordered_map <-> BST_T
 #include <ranges>        // std::ranges::range
 #include <cassert>       // debug: macro assert(expr...)
@@ -74,12 +75,6 @@ template<std::copy_constructible K, std::move_constructible V>requires(std::tota
                            enum: bool {RED = false, BLACK = true} color{BLACK};
 
                            Node(Node *const _p_parent) noexcept: p_parent{_p_parent} {}
-                           Node(const Node&) noexcept = default;
-                           Node(Node&& _b) noexcept: p{_b.p}, p_parent{_b.p_parent}, p_left{_b.p_left}, p_right{_b.p_right}, height{_b.height}, color{_b.color} {_b.p = nullptr, _b.p_left = _b.p_right = nullptr;}
-                           // only swap their own member variables, but not change nodes that are linked with them two
-                           friend void swap(Node& a, Node& b) noexcept {Node *a_p_node{a.p_parent}; a.p_parent = b.p_parent, b.p_parent = a_p_node, a_p_node = a.p_left, a.p_left = b.p_left, b.p_left = a_p_node, a_p_node = a.p_right, a.p_right = b.p_right, b.p_right = a_p_node, std::swap(a.p, b.p), std::swap(a.height, b.height), std::swap(a.color, b.color);}
-                           Node& operator=(Node b) noexcept;
-                           ~Node() noexcept;
 
                            // insert Entry at an [external] Node; dye this [red]
                            Node& insert(const K& key, V val) noexcept;
@@ -147,8 +142,8 @@ template<std::copy_constructible K, std::move_constructible V>requires(std::tota
         virtual void erase(const K& key) noexcept = 0;
 
         // do NOT invoke the following 2 functions, because they are written for Splay; any binary tree may be converted to a Splay
-        [[nodiscard]] const Node& get_root_ref_for_Splay() && noexcept;
-        [[nodiscard]] const unsigned& get_size_ref_for_Splay() && noexcept;
+        [[nodiscard]] const Node& get_root_ref_for_Splay_() && noexcept;
+        [[nodiscard]] const unsigned& get_size_ref_for_Splay_() && noexcept;
     protected:
         [[nodiscard]] static Node *iter2ptr(const iterator& iter) noexcept;
 };  template<typename T>concept BST_T = (requires(const T bst) {bst.begin()->key, bst.begin()->val;}) && std::derived_from<std::remove_cvref_t<T>, BST<std::remove_cvref_t<decltype(std::declval<T>().begin()->key)>, std::remove_cvref_t<decltype(std::declval<T>().begin()->val)>>>;
@@ -162,7 +157,7 @@ template<std::copy_constructible K, std::move_constructible V>requires(std::tota
         Plain() noexcept = default;
         Plain(const Plain& b) noexcept requires(std::copy_constructible<V>): Plain{} {*this += b;}
         Plain(Plain&& _b) noexcept: Plain{} {swap(*this, _b);}
-        friend void swap(Plain& a, Plain& b) noexcept {std::swap(a.size_, b.size_), swap(a.root, b.root); if (a.root.p_left) [[likely]] a.root.p_left->p_parent = &(a.root); if (a.root.p_right) [[likely]] a.root.p_right->p_parent = &(a.root); if (b.root.p_left) [[likely]] b.root.p_left->p_parent = &(b.root); if (b.root.p_right) [[likely]] b.root.p_right->p_parent = &(b.root);}
+        friend void swap(Plain& a, Plain& b) noexcept {std::swap(a.size_, b.size_), std::swap(a.root, b.root); if (a.root.p_left) [[likely]] a.root.p_left->p_parent = &(a.root); if (a.root.p_right) [[likely]] a.root.p_right->p_parent = &(a.root); if (b.root.p_left) [[likely]] b.root.p_left->p_parent = &(b.root); if (b.root.p_right) [[likely]] b.root.p_right->p_parent = &(b.root);}
         Plain& operator=(Plain b) noexcept;
 
         template<std::ranges::range map_T>requires(!std::same_as<std::remove_cvref_t<map_T>, Plain>) Plain(map_T& b) noexcept requires(std::copy_constructible<V>): Plain{} {*this += b;}
@@ -185,7 +180,7 @@ template<std::copy_constructible K, std::move_constructible V>requires(std::tota
         AVL() noexcept = default;
         AVL(const AVL& b) noexcept requires(std::copy_constructible<V>): AVL{} {*this += b;}
         AVL(AVL&& _b) noexcept: AVL{} {swap(*this, _b);}
-        friend void swap(AVL& a, AVL& b) noexcept {std::swap(a.size_, b.size_), swap(a.root, b.root); if (a.root.p_left) [[likely]] a.root.p_left->p_parent = &(a.root); if (a.root.p_right) [[likely]] a.root.p_right->p_parent = &(a.root); if (b.root.p_left) [[likely]] b.root.p_left->p_parent = &(b.root); if (b.root.p_right) [[likely]] b.root.p_right->p_parent = &(b.root);}
+        friend void swap(AVL& a, AVL& b) noexcept {std::swap(a.size_, b.size_), std::swap(a.root, b.root); if (a.root.p_left) [[likely]] a.root.p_left->p_parent = &(a.root); if (a.root.p_right) [[likely]] a.root.p_right->p_parent = &(a.root); if (b.root.p_left) [[likely]] b.root.p_left->p_parent = &(b.root); if (b.root.p_right) [[likely]] b.root.p_right->p_parent = &(b.root);}
         AVL& operator=(AVL b) noexcept;
 
         template<std::ranges::range map_T>requires(!std::same_as<std::remove_cvref_t<map_T>, AVL>) AVL(map_T& b) noexcept requires(std::copy_constructible<V>): AVL{} {*this += b;}
@@ -210,11 +205,11 @@ template<std::copy_constructible K, std::move_constructible V>requires(std::tota
         Splay() noexcept = default;
         Splay(const Splay& b) noexcept requires(std::copy_constructible<V>): Splay{} {*this += b;}
         Splay(Splay&& _b) noexcept: Splay{} {swap(*this, _b);}
-        friend void swap(Splay& a, Splay& b) noexcept {std::swap(a.size_, b.size_), swap(a.root, b.root); if (a.root.p_left) [[likely]] a.root.p_left->p_parent = &(a.root); if (a.root.p_right) [[likely]] a.root.p_right->p_parent = &(a.root); if (b.root.p_left) [[likely]] b.root.p_left->p_parent = &(b.root); if (b.root.p_right) [[likely]] b.root.p_right->p_parent = &(b.root);}
+        friend void swap(Splay& a, Splay& b) noexcept {std::swap(a.size_, b.size_), std::swap(a.root, b.root); if (a.root.p_left) [[likely]] a.root.p_left->p_parent = &(a.root); if (a.root.p_right) [[likely]] a.root.p_right->p_parent = &(a.root); if (b.root.p_left) [[likely]] b.root.p_left->p_parent = &(b.root); if (b.root.p_right) [[likely]] b.root.p_right->p_parent = &(b.root);}
         Splay& operator=(Splay b) noexcept;
 
         template<std::ranges::range map_T>requires(!std::same_as<std::remove_cvref_t<map_T>, Splay>) Splay(map_T& b) noexcept requires(std::copy_constructible<V>): Splay{} {*this += b;}
-        template<std::ranges::range map_T>requires(!std::same_as<std::remove_cvref_t<map_T>, Splay> && !std::is_const_v<map_T>) Splay(map_T&& _b) noexcept: Splay{} {if constexpr(!std::derived_from<std::remove_cvref_t<map_T>, BST<K, V>>) *this += std::move(_b); else {std::swap(size_, const_cast<unsigned&>(std::move(_b).get_size_ref_for_Splay())), swap(root, const_cast<BST<K, V>::Node&>(std::move(_b).get_root_ref_for_Splay())); if (root.p_left) [[likely]] root.p_left->p_parent = &(root); if (root.p_right) [[likely]] root.p_right->p_parent = &(root);}}
+        template<std::ranges::range map_T>requires(!std::same_as<std::remove_cvref_t<map_T>, Splay> && !std::is_const_v<map_T>) Splay(map_T&& _b) noexcept: Splay{} {if constexpr(!std::derived_from<std::remove_cvref_t<map_T>, BST<K, V>>) *this += std::move(_b); else {std::swap(size_, const_cast<unsigned&>(std::move(_b).get_size_ref_for_Splay_())), swap(root, const_cast<BST<K, V>::Node&>(std::move(_b).get_root_ref_for_Splay_())); if (root.p_left) [[likely]] root.p_left->p_parent = &(root); if (root.p_right) [[likely]] root.p_right->p_parent = &(root);}}
 
         virtual void insert(const K& key, V val) noexcept override;
         virtual void erase(const K& key) noexcept override;
@@ -239,7 +234,7 @@ template<std::copy_constructible K, std::move_constructible V>requires(std::tota
         RedBlack() noexcept = default;
         RedBlack(const RedBlack& b) noexcept requires(std::copy_constructible<V>): RedBlack{} {*this += b;}
         RedBlack(RedBlack&& _b) noexcept: RedBlack{} {swap(*this, _b);}
-        friend void swap(RedBlack& a, RedBlack& b) noexcept {std::swap(a.size_, b.size_), swap(a.root, b.root); if (a.root.p_left) [[likely]] a.root.p_left->p_parent = &(a.root); if (a.root.p_right) [[likely]] a.root.p_right->p_parent = &(a.root); if (b.root.p_left) [[likely]] b.root.p_left->p_parent = &(b.root); if (b.root.p_right) [[likely]] b.root.p_right->p_parent = &(b.root);}
+        friend void swap(RedBlack& a, RedBlack& b) noexcept {std::swap(a.size_, b.size_), std::swap(a.root, b.root); if (a.root.p_left) [[likely]] a.root.p_left->p_parent = &(a.root); if (a.root.p_right) [[likely]] a.root.p_right->p_parent = &(a.root); if (b.root.p_left) [[likely]] b.root.p_left->p_parent = &(b.root); if (b.root.p_right) [[likely]] b.root.p_right->p_parent = &(b.root);}
         RedBlack& operator=(RedBlack b) noexcept;
 
         template<std::ranges::range map_T>requires(!std::same_as<std::remove_cvref_t<map_T>, RedBlack>) RedBlack(map_T& b) noexcept requires(std::copy_constructible<V>): RedBlack{} {*this += b;}
@@ -393,7 +388,7 @@ bst_Shynur::Splay<K, V>::erase(const K& key) noexcept {
 
         if (typename BST<K, V>::Node *p_next_node; p_node->internal_left() && p_node->internal_right())
             p_next_node = p_node->p_next(), 
-            std::swap(p_node->p, p_next_node->p), 
+            std::swap(p_node->p, p_next_node->p),
             p_node = p_next_node;
         
         p_node = p_node->del().p_parent;
@@ -461,7 +456,7 @@ bst_Shynur::Plain<K, V>::erase(const K& key) noexcept {
 
         if (typename BST<K, V>::Node *p_next_node; p_to_erase->internal_left() && p_to_erase->internal_right())
             p_next_node = p_to_erase->p_next(), 
-            std::swap(p_to_erase->p, p_next_node->p), 
+            std::swap(p_to_erase->p, p_next_node->p),
             p_to_erase = p_next_node;
         
         if (typename BST<K, V>::Node *p_parent{p_to_erase->del().p_parent}; p_parent) [[likely]]
@@ -777,9 +772,7 @@ std::map<J, U>() && noexcept {
 
     assert(m.size() == size());
 
-    return size_ = 0,
-           root.~Node(), 
-           root = {nullptr},
+    return ~BST(),
            m;
 }
 
@@ -808,9 +801,7 @@ std::multimap<J, U>() && noexcept {
 
     assert(mm.size() == size());
 
-    return size_ = 0,
-           root.~Node(), 
-           root = {nullptr},
+    return ~BST(),
            mm;
 }
 
@@ -839,9 +830,7 @@ std::unordered_map<J, U>() && noexcept {
 
     assert(um.size() == size());
 
-    return size_ = 0,
-           root.~Node(), 
-           root = {nullptr},
+    return ~BST(),
            um;
 }
 
@@ -870,9 +859,7 @@ std::unordered_multimap<J, U>() && noexcept {
 
     assert(umm.size() == size());
 
-    return size_ = 0,
-           root.~Node(), 
-           root = {nullptr},
+    return ~BST(),
            umm;
 }
 
@@ -883,9 +870,17 @@ bst_Shynur::BST<K, V>::~BST() noexcept {
 
     assert(size() >= 0 && root.p_parent == nullptr);
 
-    root.~Node(),
-    root.p = nullptr,
-    root.p_left = root.p_right = nullptr,
+    static const constexpr struct {
+        void operator()(const Node *const p_node) const noexcept {
+            if (p_node->internal())
+                (*this)(p_node->p_left), delete p_node->p_left,
+                delete p_node->p,
+                (*this)(p_node->p_right), delete p_node->p_right;
+        }
+    } wither_helper{};
+
+    wither_helper(&root),
+    root = {nullptr},
     size_ = 0;
 }
 
@@ -977,7 +972,7 @@ bst_Shynur::BST<K, V>::Node::zig() noexcept {
     p_left->p_parent = p_parent;
 
     if (Node& zigged{*p_left}; is_root()) [[unlikely]]
-        return swap(zigged, *(p_parent = this)),
+        return std::swap(zigged, *(p_parent = this)),
                std::swap(p_left->p_parent, zigged.p_right->p_parent),
                zigged.p_left = p_right,
                p_right = &zigged,
@@ -998,7 +993,7 @@ bst_Shynur::BST<K, V>::Node::zag() noexcept {
     p_right->p_parent = p_parent;
 
     if (Node& zagged{*p_right}; is_root()) [[unlikely]]
-        return swap(zagged, *(p_parent = this)),
+        return std::swap(zagged, *(p_parent = this)),
                std::swap(p_right->p_parent, zagged.p_left->p_parent),
                zagged.p_right = p_left,
                p_left = &zagged,
@@ -1017,14 +1012,14 @@ bst_Shynur::BST<K, V>::contains(const K& key) const noexcept {
 
 template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) inline
 const unsigned&
-bst_Shynur::BST<K, V>::get_size_ref_for_Splay() && noexcept {
+bst_Shynur::BST<K, V>::get_size_ref_for_Splay_() && noexcept {
 
     return size_;
 }
 
 template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) inline
 const bst_Shynur::BST<K, V>::Node&
-bst_Shynur::BST<K, V>::get_root_ref_for_Splay() && noexcept {
+bst_Shynur::BST<K, V>::get_root_ref_for_Splay_() && noexcept {
 
     return root;
 }
@@ -1105,15 +1100,11 @@ bst_Shynur::BST<K, V>::Node::del() noexcept {
                *this = {p_parent};
     else
         if (Node *const p_subtree{internal_left() ? (delete p_right, p_left) : (delete p_left, p_right)}; is_root()) [[unlikely]]
-            return *this = *p_subtree,
-                   p_subtree->p = nullptr,
-                   p_subtree->p_left = p_subtree->p_right = p_parent = nullptr,
+            return (*this = *p_subtree).p_parent = nullptr,
                    delete p_subtree,
                    *(p_left->p_parent = p_right->p_parent = this);
         else
-            return p = nullptr, 
-                   (ptr_from_parent() = p_subtree)->p_parent = p_parent,
-                   p_left = p_right = nullptr, 
+            return (ptr_from_parent() = p_subtree)->p_parent = p_parent, 
                    delete this, 
                    *p_subtree;
 }
@@ -1129,14 +1120,14 @@ template<std::copy_constructible K, std::move_constructible V>requires(std::tota
 bool
 bst_Shynur::BST<K, V>::Node::external() const noexcept {
 
-    return p == nullptr;
+    return !p;
 }
 
 template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) inline
 bool
 bst_Shynur::BST<K, V>::Node::is_root() const noexcept {
 
-    return p_parent == nullptr;
+    return !p_parent;
 }
 
 template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) inline
@@ -1164,25 +1155,6 @@ bst_Shynur::BST<K, V>::Node::is_leaf() const noexcept {
     assert(internal());
 
     return p_left->external() && p_right->external();
-}
-
-// assign b's member variables to this node one by one
-// but not to do anything like change the way how a node is linked to others 
-template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) inline
-bst_Shynur::BST<K, V>::Node&
-bst_Shynur::BST<K, V>::Node::operator=(Node b) noexcept {
-
-    return p = b.p, b.p = nullptr, 
-
-           p_parent = b.p_parent,
-
-           p_left = b.p_left,
-           p_right = b.p_right,
-           b.p_left = b.p_right = nullptr,
-
-           height = b.height,
-           color = b.color,
-           *this;
 }
 
 template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) inline
@@ -1218,18 +1190,6 @@ int
 bst_Shynur::BST<K, V>::Node::get_height() const noexcept {
 
     return static_cast<int>(height);
-}
-
-// delete this node's both left and right trees
-// delete the element this node stored
-template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>)
-bst_Shynur::BST<K, V>::Node::~Node() noexcept {
-
-    assert((p_left && p && p_right) || (!p_left && !p && !p_right));
-
-    delete p_left, 
-    delete p, 
-    delete p_right;
 }
 
 // if K and V are both hashable, return hash(K) ^ hash(V)
