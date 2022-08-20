@@ -4,7 +4,7 @@
 
 **利用 `BST` 可以很简单地写出一个新的树结构而无需考虑过多的面向对象的问题, 将 `Plain` 的实现复制粘贴一遍, 再把名字 "Plain" 替换成你所喜欢的. 最后专注于编写 `insert` 和 `erase` 两个方法即可.** 
 
-[录制了一个测试性能的视频 a short video showing these BSTs' performance against std::map](ttps://www.bilibili.com/video/BV1414y1478k?share_source=copy_web&vd_source=c29cb724994184dc96f5e7824fd84554 b战视频演示)
+[录制了一个测试性能的视频 a short video showing these BSTs' performance against std::map](ttps://www.bilibili.com/video/BV1414y1478k?share_source=copy_web&vd_source=c29cb724994184dc96f5e7824fd84554 "b战视频演示")
 
 ________________
 
