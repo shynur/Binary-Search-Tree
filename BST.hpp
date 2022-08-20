@@ -1,6 +1,6 @@
 /*
  * one pattern for generating BST and some popular implementations of BBST
- * Copyright (C) 2022 Shynur <one.last.kiss@qq.com>.
+ * Copyright (C) 2022 Shynur <Shynur@outlook.com> <one.last.kiss@qq.com>.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 #include <functional>    // std::hash
 #include <type_traits>   // std::remove_cvref_t
 #include <unordered_map> // std::unordered_map <-> BST_T
+
 namespace bst_Shynur {
 template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) struct BST {
         int size() const noexcept;
