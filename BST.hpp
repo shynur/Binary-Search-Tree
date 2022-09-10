@@ -598,9 +598,8 @@ bst_Shynur::BST<K, V>::operator[](const K& key) const {
         return found->val;
     else {
         static const constexpr struct: public std::exception {
-            const char *const err_info_bst_Shynur{"`the key does NOT exist` from BST::operator[const K&]"};
             virtual const char *what() const noexcept override {
-                return err_info_bst_Shynur;
+                return "`the key does NOT exist` from BST::operator[const K&]";
             }
         } err{};
         throw err;
@@ -1121,14 +1120,14 @@ template<std::copy_constructible K, std::move_constructible V>requires(std::tota
 bool
 bst_Shynur::BST<K, V>::Node::external() const noexcept {
 
-    return !p;
+    return p == nullptr;
 }
 
 template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) inline
 bool
 bst_Shynur::BST<K, V>::Node::is_root() const noexcept {
 
-    return !p_parent;
+    return p_parent == nullptr;
 }
 
 template<std::copy_constructible K, std::move_constructible V>requires(std::totally_ordered<K>) inline
